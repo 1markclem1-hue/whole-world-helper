@@ -204,6 +204,7 @@
       padding: 10px;
       text-align: center;
       background: #f9fafb;
+      cursor: pointer;
     }
 
     .ft-label {
@@ -247,6 +248,89 @@
 
     .ft-option-btn:hover {
       background: #e5e7eb;
+    }
+
+    /* Work Timer */
+    .timer-section {
+      margin-top: 12px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 8px;
+    }
+
+    .timer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .timer-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .timer-display {
+      margin-top: 6px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+
+    .timer-controls {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .timer-controls input {
+      width: 60px;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .timer-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: #e5e7eb;
+      color: #111827;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .timer-btn.primary {
+      background: var(--accent-2);
+      color: #111827;
+    }
+
+    .timer-btn:hover {
+      filter: brightness(1.03);
+      transform: translateY(-0.5px);
+    }
+
+    .timer-status {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .timer-done {
+      color: var(--success);
+      font-weight: 600;
     }
 
     /* Emotion check-in */
@@ -341,17 +425,17 @@
       <h1>Whole World Helper</h1>
       <p>A calm web app for visual support, choices, and a favorite song.</p>
       <div class="student-selector" aria-label="Choose student profile">
-        <button class="student-btn active" data-student="autism">
-          <span>🧩</span> Student A – Autism
+        <button class="student-btn active" data-student="atticus">
+          <span>🧩</span> Student A – Atticus
         </button>
-        <button class="student-btn" data-student="downs">
-          <span>💛</span> Student B – Down Syndrome
+        <button class="student-btn" data-student="trey">
+          <span>💛</span> Student B – Trey
         </button>
       </div>
     </header>
 
     <div class="card-row">
-      <!-- Left column: song & first–then -->
+      <!-- Left column: song, first–then, timer -->
       <section class="card" aria-label="Song and schedule section">
         <h2>🎵 Song & First–Then</h2>
         <div class="tag">
@@ -363,7 +447,7 @@
             He’s Got the Whole World in His Hands
           </div>
           <div class="song-subtitle" id="song-subtitle">
-            Tap your name above, then press play to listen together.
+            Tap a name above, then press play to listen together.
           </div>
 
           <div class="song-controls">
@@ -371,8 +455,9 @@
               ▶️ Play / Pause Song
             </button>
             <!-- IMPORTANT:
-                 Replace "whole-world.mp3" below with the actual path or URL
-                 of the audio file your mentor is allowed to use at school. -->
+                 Replace or re-upload the audio file below.
+                 If you upload a new song, name it "whole-world.mp3"
+                 or change the src to match your new filename. -->
             <audio id="song-player" preload="auto">
               <source src="whole-world.mp3" type="audio/mpeg" />
               Your browser does not support the audio element.
@@ -384,18 +469,18 @@
           <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
             <strong style="font-size:0.95rem;">First–Then Board</strong>
             <span style="font-size:0.78rem; color:var(--text-soft);">
-              Tap a word below to set “First” or “Then”.
+              Tap a card, then tap a word below to set “First” or “Then”.
             </span>
           </div>
 
           <div class="first-then" id="first-then-board">
             <div class="ft-card" data-role="first">
-              <div class="ft-label">First</div>
+              <div class="ft-label">First (Work)</div>
               <div class="ft-icon" id="first-icon">📚</div>
               <div class="ft-task" id="first-task">Work Time</div>
             </div>
             <div class="ft-card" data-role="then">
-              <div class="ft-label">Then</div>
+              <div class="ft-label">Then (Break)</div>
               <div class="ft-icon" id="then-icon">🎵</div>
               <div class="ft-task" id="then-task">Song Break</div>
             </div>
@@ -418,6 +503,32 @@
               ✅ All Done
             </button>
           </div>
+
+          <!-- Work Timer -->
+          <div class="timer-section" aria-label="Work timer">
+            <div class="timer-header">
+              <span class="timer-title">Work Timer</span>
+              <span style="font-size:0.78rem; color:var(--text-soft);">
+                Mrs. Mercer sets the minutes. When time is done, it’s break time.
+              </span>
+            </div>
+            <div class="timer-display" id="timer-display">05:00</div>
+            <div class="timer-controls">
+              <label for="timer-minutes">
+                Minutes:
+                <input id="timer-minutes" type="number" min="1" max="60" value="5" />
+              </label>
+              <button class="timer-btn primary" id="timer-start">
+                ▶️ Start / Pause
+              </button>
+              <button class="timer-btn" id="timer-reset">
+                ⏹ Reset
+              </button>
+            </div>
+            <div class="timer-status" id="timer-status">
+              Set a time, then press Start.
+            </div>
+          </div>
         </div>
       </section>
 
@@ -425,7 +536,7 @@
       <section class="card" aria-label="Emotions and choices section">
         <h2 id="student-panel-title">💬 I Want / I Feel</h2>
         <div class="tag">
-          <span id="student-tag">Profile: Student A – visual + calm choices</span>
+          <span id="student-tag">Profile: Atticus – visual choices & calm support</span>
         </div>
 
         <!-- Emotions -->
@@ -470,17 +581,17 @@
     </div>
 
     <footer>
-      Tip: Replace <code>whole-world.mp3</code> with an approved audio file path
-      your school allows.
+      Tip: Upload a new audio file named <code>whole-world.mp3</code>, or update the
+      <code>src</code> in the audio tag to match your new song.
     </footer>
   </div>
 
   <script>
     // Simple state for two students
     const students = {
-      autism: {
-        name: "Student A – Autism",
-        tag: "Profile: Student A – visual + clear choices",
+      atticus: {
+        name: "Student A – Atticus",
+        tag: "Profile: Atticus – visual choices & calm support",
         songSubtitle: "Use the song as a calm, predictable break after work.",
         choices: [
           { emoji: "🎵", label: "Song" },
@@ -491,9 +602,9 @@
           { emoji: "🚻", label: "Bathroom" }
         ]
       },
-      downs: {
-        name: "Student B – Down Syndrome",
-        tag: "Profile: Student B – loves music & simple steps",
+      trey: {
+        name: "Student B – Trey",
+        tag: "Profile: Trey – loves music & simple steps",
         songSubtitle:
           "Sing along or move to the beat while the song plays.",
         choices: [
@@ -507,8 +618,8 @@
       }
     };
 
-    let currentStudent = "autism";
-    let activeFtRole = "first"; // which to fill: "first" or "then"
+    let currentStudent = "atticus";
+    let activeFtRole = "first"; // which card we're editing: "first" or "then"
 
     const studentButtons = document.querySelectorAll(".student-btn");
     const studentPanelTitle = document.getElementById("student-panel-title");
@@ -529,6 +640,79 @@
 
     const audio = document.getElementById("song-player");
     const playBtn = document.getElementById("play-btn");
+
+    // Timer elements & state
+    const timerDisplay = document.getElementById("timer-display");
+    const timerMinutesInput = document.getElementById("timer-minutes");
+    const timerStartBtn = document.getElementById("timer-start");
+    const timerResetBtn = document.getElementById("timer-reset");
+    const timerStatus = document.getElementById("timer-status");
+
+    let timerInterval = null;
+    let remainingSeconds = 5 * 60; // default 5 minutes
+
+    function formatTime(totalSeconds) {
+      const m = Math.floor(totalSeconds / 60)
+        .toString()
+        .padStart(2, "0");
+      const s = (totalSeconds % 60).toString().padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function updateTimerDisplay() {
+      timerDisplay.textContent = formatTime(remainingSeconds);
+    }
+
+    function startTimer() {
+      const minutes = parseInt(timerMinutesInput.value, 10);
+      if (!timerInterval) {
+        if (!isNaN(minutes) && minutes > 0 && minutes <= 60) {
+          // Only reset remainingSeconds to the input when starting fresh
+          if (remainingSeconds === 0 || remainingSeconds === 5 * 60) {
+            remainingSeconds = minutes * 60;
+          }
+          updateTimerDisplay();
+          timerStatus.textContent = "Working… when the timer is done, it's break time.";
+          timerStatus.classList.remove("timer-done");
+          timerInterval = setInterval(() => {
+            remainingSeconds--;
+            if (remainingSeconds <= 0) {
+              remainingSeconds = 0;
+              clearInterval(timerInterval);
+              timerInterval = null;
+              timerStatus.textContent = "Time is up! Break time.";
+              timerStatus.classList.add("timer-done");
+            }
+            updateTimerDisplay();
+          }, 1000);
+        } else {
+          timerStatus.textContent = "Please choose a time between 1 and 60 minutes.";
+          timerStatus.classList.remove("timer-done");
+        }
+      } else {
+        // Pause
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerStatus.textContent = "Paused. Press Start to continue.";
+        timerStatus.classList.remove("timer-done");
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      const minutes = parseInt(timerMinutesInput.value, 10) || 5;
+      remainingSeconds = minutes * 60;
+      updateTimerDisplay();
+      timerStatus.textContent = "Set a time, then press Start.";
+      timerStatus.classList.remove("timer-done");
+    }
+
+    // Initial timer state
+    updateTimerDisplay();
+
+    timerStartBtn.addEventListener("click", startTimer);
+    timerResetBtn.addEventListener("click", resetTimer);
 
     function renderStudent(studentKey) {
       const s = students[studentKey];
