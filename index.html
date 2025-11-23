@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Whole World Helper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --accent: #4f8cff;
+      --accent-soft: #e1ebff;
+      --accent-2: #ffc94f;
+      --text-main: #1f2933;
+      --text-soft: #52606d;
+      --danger: #ff6b6b;
+      --success: #27ae60;
+      --radius-lg: 18px;
+      --shadow-soft: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .app {
+      max-width: 1100px;
+      width: 100%;
+      background: transparent;
+    }
+
+    header {
+      text-align: center;
+      padding: 16px 10px 6px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.7rem;
+      letter-spacing: 0.03em;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .card-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 840px) {
+      .card-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px 16px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--accent-soft);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      margin-top: 6px;
+    }
+
+    .tag span {
+      font-size: 0.95rem;
+    }
+
+    /* Student selector */
+    .student-selector {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .student-btn {
+      border-radius: 999px;
+      border: 2px solid transparent;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: var(--card);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .student-btn span {
+      font-size: 1.05rem;
+    }
+
+    .student-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    /* Song section */
+    .song-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .song-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .song-subtitle {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+    }
+
+    .song-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .primary-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 18px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 5px 14px rgba(79, 140, 255, 0.35);
+      transition: all 0.15s ease;
+    }
+
+    .primary-btn:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .primary-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(79, 140, 255, 0.3);
+    }
+
+    audio {
+      width: 100%;
+      max-width: 280px;
+    }
+
+    /* First–Then board */
+    .first-then {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .ft-card {
+      border-radius: 16px;
+      border: 2px solid #e5e7eb;
+      padding: 10px;
+      text-align: center;
+      background: #f9fafb;
+    }
+
+    .ft-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .ft-task {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .ft-icon {
+      font-size: 1.6rem;
+    }
+
+    .ft-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .ft-option-btn {
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: 1px solid #d1d5db;
+      background: #f3f4f6;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .ft-option-btn:hover {
+      background: #e5e7eb;
+    }
+
+    /* Emotion check-in */
+    .emotions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .emotion-btn {
+      flex: 1 0 70px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      padding: 6px 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .emotion-emoji {
+      font-size: 1.4rem;
+    }
+
+    .emotion-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .emotion-status {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    /* Choice board */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .choice-btn {
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.82rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      transition: all 0.15s ease;
+    }
+
+    .choice-btn span {
+      font-size: 1.3rem;
+    }
+
+    .choice-btn:hover {
+      background: #eef2ff;
+      border-color: var(--accent-soft);
+    }
+
+    .choice-output {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      min-height: 1.2em;
+    }
+
+    /* Footer note */
+    footer {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Whole World Helper</h1>
+      <p>A calm web app for visual support, choices, and a favorite song.</p>
+      <div class="student-selector" aria-label="Choose student profile">
+        <button class="student-btn active" data-student="autism">
+          <span>🧩</span> Student A – Autism
+        </button>
+        <button class="student-btn" data-student="downs">
+          <span>💛</span> Student B – Down Syndrome
+        </button>
+      </div>
+    </header>
+
+    <div class="card-row">
+      <!-- Left column: song & first–then -->
+      <section class="card" aria-label="Song and schedule section">
+        <h2>🎵 Song & First–Then</h2>
+        <div class="tag">
+          <span>He’s Got the Whole World in His Hands</span>
+        </div>
+
+        <div class="song-container" style="margin-top: 8px;">
+          <div class="song-title">
+            He’s Got the Whole World in His Hands
+          </div>
+          <div class="song-subtitle" id="song-subtitle">
+            Tap your name above, then press play to listen together.
+          </div>
+
+          <div class="song-controls">
+            <button class="primary-btn" id="play-btn">
+              ▶️ Play / Pause Song
+            </button>
+            <!-- IMPORTANT:
+                 Replace "whole-world.mp3" below with the actual path or URL
+                 of the audio file your mentor is allowed to use at school. -->
+            <audio id="song-player" preload="auto">
+              <source src="whole-world.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; border-top: 1px solid #e5e7eb; padding-top: 8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+            <strong style="font-size:0.95rem;">First–Then Board</strong>
+            <span style="font-size:0.78rem; color:var(--text-soft);">
+              Tap a word below to set “First” or “Then”.
+            </span>
+          </div>
+
+          <div class="first-then" id="first-then-board">
+            <div class="ft-card" data-role="first">
+              <div class="ft-label">First</div>
+              <div class="ft-icon" id="first-icon">📚</div>
+              <div class="ft-task" id="first-task">Work Time</div>
+            </div>
+            <div class="ft-card" data-role="then">
+              <div class="ft-label">Then</div>
+              <div class="ft-icon" id="then-icon">🎵</div>
+              <div class="ft-task" id="then-task">Song Break</div>
+            </div>
+          </div>
+
+          <div class="ft-options" aria-label="Quick schedule choices">
+            <button class="ft-option-btn" data-task="Work Time" data-icon="📚">
+              📚 Work
+            </button>
+            <button class="ft-option-btn" data-task="Song Break" data-icon="🎵">
+              🎵 Song
+            </button>
+            <button class="ft-option-btn" data-task="Snack" data-icon="🍎">
+              🍎 Snack
+            </button>
+            <button class="ft-option-btn" data-task="Sensory Break" data-icon="🧸">
+              🧸 Break
+            </button>
+            <button class="ft-option-btn" data-task="All Done" data-icon="✅">
+              ✅ All Done
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right column: emotions & choice board -->
+      <section class="card" aria-label="Emotions and choices section">
+        <h2 id="student-panel-title">💬 I Want / I Feel</h2>
+        <div class="tag">
+          <span id="student-tag">Profile: Student A – visual + calm choices</span>
+        </div>
+
+        <!-- Emotions -->
+        <div style="margin-top: 10px;">
+          <strong style="font-size:0.95rem;">How do you feel?</strong>
+          <div class="emotions" id="emotion-buttons">
+            <button class="emotion-btn" data-feeling="Happy">
+              <div class="emotion-emoji">😊</div>
+              <div>Happy</div>
+            </button>
+            <button class="emotion-btn" data-feeling="OK">
+              <div class="emotion-emoji">😐</div>
+              <div>OK</div>
+            </button>
+            <button class="emotion-btn" data-feeling="Sad">
+              <div class="emotion-emoji">😢</div>
+              <div>Sad</div>
+            </button>
+            <button class="emotion-btn" data-feeling="Mad">
+              <div class="emotion-emoji">😠</div>
+              <div>Mad</div>
+            </button>
+            <button class="emotion-btn" data-feeling="Tired">
+              <div class="emotion-emoji">😴</div>
+              <div>Tired</div>
+            </button>
+          </div>
+          <div class="emotion-status" id="emotion-status">
+            Tap a face to help the teacher know how you feel.
+          </div>
+        </div>
+
+        <!-- Choice board -->
+        <div style="margin-top: 12px;">
+          <strong style="font-size:0.95rem;">I want…</strong>
+          <div class="choice-grid" id="choice-grid">
+            <!-- Buttons will be filled by JS based on selected student -->
+          </div>
+          <div class="choice-output" id="choice-output"></div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      Tip: Replace <code>whole-world.mp3</code> with an approved audio file path
+      your school allows.
+    </footer>
+  </div>
+
+  <script>
+    // Simple state for two students
+    const students = {
+      autism: {
+        name: "Student A – Autism",
+        tag: "Profile: Student A – visual + clear choices",
+        songSubtitle: "Use the song as a calm, predictable break after work.",
+        choices: [
+          { emoji: "🎵", label: "Song" },
+          { emoji: "🧸", label: "Sensory Break" },
+          { emoji: "📚", label: "More Work" },
+          { emoji: "🚶‍♂️", label: "Walk" },
+          { emoji: "💧", label: "Water" },
+          { emoji: "🚻", label: "Bathroom" }
+        ]
+      },
+      downs: {
+        name: "Student B – Down Syndrome",
+        tag: "Profile: Student B – loves music & simple steps",
+        songSubtitle:
+          "Sing along or move to the beat while the song plays.",
+        choices: [
+          { emoji: "🎵", label: "Song Again" },
+          { emoji: "🤗", label: "Hug / High Five" },
+          { emoji: "🍎", label: "Snack" },
+          { emoji: "🎨", label: "Art Time" },
+          { emoji: "📖", label: "Story" },
+          { emoji: "😌", label: "Quiet Time" }
+        ]
+      }
+    };
+
+    let currentStudent = "autism";
+    let activeFtRole = "first"; // which to fill: "first" or "then"
+
+    const studentButtons = document.querySelectorAll(".student-btn");
+    const studentPanelTitle = document.getElementById("student-panel-title");
+    const studentTag = document.getElementById("student-tag");
+    const songSubtitle = document.getElementById("song-subtitle");
+    const choiceGrid = document.getElementById("choice-grid");
+    const choiceOutput = document.getElementById("choice-output");
+
+    const firstTaskEl = document.getElementById("first-task");
+    const firstIconEl = document.getElementById("first-icon");
+    const thenTaskEl = document.getElementById("then-task");
+    const thenIconEl = document.getElementById("then-icon");
+    const ftCards = document.querySelectorAll(".ft-card");
+    const ftOptions = document.querySelectorAll(".ft-option-btn");
+
+    const emotionButtons = document.querySelectorAll(".emotion-btn");
+    const emotionStatus = document.getElementById("emotion-status");
+
+    const audio = document.getElementById("song-player");
+    const playBtn = document.getElementById("play-btn");
+
+    function renderStudent(studentKey) {
+      const s = students[studentKey];
+      studentPanelTitle.textContent = "💬 I Want / I Feel";
+      studentTag.textContent = s.tag;
+      songSubtitle.textContent = s.songSubtitle;
+
+      // Update choice board
+      choiceGrid.innerHTML = "";
+      s.choices.forEach((c) => {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.innerHTML = `<span>${c.emoji}</span><div>${c.label}</div>`;
+        btn.addEventListener("click", () => {
+          choiceOutput.textContent = `Student is asking for: “${c.label}”.`;
+        });
+        choiceGrid.appendChild(btn);
+      });
+
+      // Clear choice output
+      choiceOutput.textContent = "";
+    }
+
+    // Initialize student view
+    renderStudent(currentStudent);
+
+    studentButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        studentButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentStudent = btn.dataset.student;
+        renderStudent(currentStudent);
+      });
+    });
+
+    // First–Then logic
+    ftCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const role = card.dataset.role;
+        activeFtRole = role;
+        ftCards.forEach((c) => (c.style.borderColor = "#e5e7eb"));
+        card.style.borderColor = "var(--accent)";
+      });
+    });
+
+    ftOptions.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const task = btn.dataset.task;
+        const icon = btn.dataset.icon;
+        if (activeFtRole === "first") {
+          firstTaskEl.textContent = task;
+          firstIconEl.textContent = icon;
+        } else {
+          thenTaskEl.textContent = task;
+          thenIconEl.textContent = icon;
+        }
+      });
+    });
+
+    // Emotion buttons
+    emotionButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        emotionButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const feeling = btn.dataset.feeling;
+        emotionStatus.textContent = `Student feels: ${feeling}.`;
+      });
+    });
+
+    // Play / pause song
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play().catch((err) => {
+          console.warn("Audio play was blocked by the browser:", err);
+        });
+      } else {
+        audio.pause();
+      }
+    });
+  </script>
+</body>
+</html>
